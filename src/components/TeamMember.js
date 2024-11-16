@@ -1,17 +1,43 @@
 // src/components/TeamMember.js
 import React from "react";
-import { Link } from "react-router-dom";
-import "./TeamMember.css"; // Create a CSS file for styling
+import { useParams } from "react-router-dom";
 
-const TeamMember = ({ name, bio, image }) => {
+const teamData = {
+  caiden: {
+    name: "Caiden",
+    bio: "Caiden is passionate about X.",
+    image: "/path-to-caiden.jpg",
+  },
+  rabi: {
+    name: "Rabi",
+    bio: "Rabi excels in Y.",
+    image: "/path-to-rabi.jpg",
+  },
+  nick: {
+    name: "Nick",
+    bio: "Nick specializes in Z.",
+    image: "/path-to-nick.jpg",
+  },
+  nate: {
+    name: "Nate",
+    bio: "Nate enjoys A.",
+    image: "/path-to-nate.jpg",
+  },
+};
+
+const TeamMember = () => {
+  const { name } = useParams();
+  const member = teamData[name];
+
+  if (!member) {
+    return <p>Team member not found.</p>;
+  }
+
   return (
     <div className="team-member">
-      <img src={image} alt={`${name}'s Profile`} className="profile-pic" />
-      <h1>{name}'s Portfolio</h1>
-      <p>{bio}</p>
-      <div className="back-link">
-        <Link to="/" className="back-button">Back to Homepage</Link>
-      </div>
+      <h1>{member.name}</h1>
+      <p>{member.bio}</p>
+      <img src={member.image} alt={member.name} />
     </div>
   );
 };
