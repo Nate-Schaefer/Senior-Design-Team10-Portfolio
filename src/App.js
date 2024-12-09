@@ -9,12 +9,9 @@ import PasswordDialog from "./components/PasswordDialog";
 const App = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  const handleAuthentication = (password) => {
-    if (password === "Fall2024Lab3") {
-      setIsAuthenticated(true);
-      return true;
-    }
-    return false;
+  const handleAuthentication = (isValid) => {
+    setIsAuthenticated(isValid);
+    return isValid;
   };
 
   return (
