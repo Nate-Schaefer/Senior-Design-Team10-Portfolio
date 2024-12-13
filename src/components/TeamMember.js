@@ -147,8 +147,9 @@ const TeamMember = () => {
       const teamMemberEmail = member.email; // Get the team member's email
       const { userName, message, timestamp } = newComment;
       // Call backend API to send email
-      fetch('http://localhost:5000/send-email', {
-        method: 'POST',
+      // fetch('http://localhost:5000/send-email', {
+      fetch('https://victorious-spiritual-cartwheel.glitch.me/send-email', {
+          method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
