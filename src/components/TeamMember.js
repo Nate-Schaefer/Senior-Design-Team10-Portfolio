@@ -8,23 +8,24 @@ import "./TeamMember.css";
 const teamData = {
   caiden: {
     name: "Caiden",
-    bio: "Caiden is passionate about X.",
-    image: "/path-to-caiden.jpg",
+    bio: "Electrical engineering student at the University of Iowa with a 3.95 GPA and a passion for applying engineering to solve medical challenges. My academic journey has been marked by hands-on research in medical physics, including the dosimetric benefits of MR-guided adaptive radiotherapy and other similar publications. During my studies at the university of Iowa I have found a passion for electronics and circuit design. My future goals include pursuing a PhD in medical physics to advance cancer treatment technologies. Outside of academics, I enjoy riding motorcycles, 3D printing, and staying active by working out or 3D printing.",
+    image: "/Headshot.jpeg",
+    email: "caiden-atienza@uiowa.edu",
     projects: [
       {
-        image: "/project1-caiden.jpg",
-        title: "Amazing App",
-        description: "Project 1: A groundbreaking app that does amazing things.",
+        image: "/Bartender.jpeg",
+        title: "Bartender",
+        description: "An automated bartender system created as the final project for an embedded systems course. The setup dispenses custom drink mixtures, controlled via a user-friendly interface and powered by an ATmega328p microcontroller. ",
       },
       {
-        image: "/project2-caiden.jpg",
-        title: "Amazing App",
-        description: "Project 2: A website redesign for an innovative brand.",
+        image: "/IRR.PNG",
+        title: "Transmitter and Receiver",
+        description: "An infrared transmitter and receiver system demonstrating wireless data transmission. This project highlights the design and implementation of circuits to transmit and detect signals using IR technology. ",
       },
       {
-        image: "/project3-caiden.jpg",
-        title: "Amazing App",
-        description: "Project 3: A portfolio showcasing Caiden's expertise.",
+        image: "/Thermometer.jpeg",
+        title: "Thermometer",
+        description: "A senior design lab project featuring a Wi-Fi-enabled thermometer for real-time temperature monitoring. The device integrates sensors with a microcontroller to transmit data to a cloudbased dashboard for visualization and analysis. ",
       },
     ],
   },
@@ -32,6 +33,7 @@ const teamData = {
     name: "Rabi",
     bio: "Rabi excels in Y.",
     image: "/path-to-rabi.jpg",
+    email: "rabi-alaya@uiowa.edu",
     projects: [
       {
         image: "/project1-rabi.jpg",
@@ -54,6 +56,7 @@ const teamData = {
     name: "Nick",
     bio: "Experienced in the fields of Software Engineering, Applied AI/ML, and Human-Computer Interaction. I grew up in a small Iowa farm town (home to the Field of Dreams) and currently live in Iowa City. Outside of programming, I enjoy lifting weights, cooking, and watching UFC events.",
     image: "/nickHeadshot.jpg",
+    email: "nickhageman0@gmail.com",
     projects: [
       {
         image: "/nickProject1.png",
@@ -76,6 +79,7 @@ const teamData = {
     name: "Nate",
     bio: "Nate enjoys A.",
     image: "/path-to-nate.jpg",
+    email: "nathanschaefer-schaefer@uiowa.edu",
     projects: [
       {
         image: "/project1-nate.jpg",
@@ -129,18 +133,45 @@ const TeamMember = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!formData.userName || !formData.message) return;
-
+  
     const commentsRef = ref(database, `team/${name}/comments`);
     const newComment = {
       name: formData.userName,
       message: formData.message,
       timestamp: new Date().toISOString(),
     };
-
+  
     push(commentsRef, newComment).then(() => {
       setFormData({ userName: "", message: "" });
+  
+      // Send an email to the team member
+      const teamMemberEmail = member.email; // Get the team member's email
+      const { userName, message, timestamp } = newComment;
+      // Call backend API to send email
+      fetch('http://localhost:5000/send-email', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          teamMemberEmail,
+          userName,
+          message,
+          timestamp,
+        }),
+      })
+        .then(response => response.json())
+        .then(data => console.log('Email sent:', data))
+        .catch(error => console.error('Error sending email:', error));
+        console.log("Data sent to backend:", {
+          teamMemberEmail,
+          userName,
+          message,
+          timestamp,
+        });
     });
   };
+  
 
   if (!member) {
     return <p>Team member not found.</p>;
