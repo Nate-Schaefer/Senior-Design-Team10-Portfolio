@@ -145,7 +145,7 @@ const TeamMember = () => {
   
       // Send an email to the team member
       const teamMemberEmail = member.email; // Get the team member's email
-      const { userName, message, timestamp } = newComment;
+      const { name, message, timestamp } = newComment;
       // Call backend API to send email
       // fetch('http://localhost:5000/send-email', {
       fetch('https://victorious-spiritual-cartwheel.glitch.me/send-email', {
@@ -155,7 +155,7 @@ const TeamMember = () => {
         },
         body: JSON.stringify({
           teamMemberEmail,
-          userName,
+          name,
           message,
           timestamp,
         }),
@@ -165,7 +165,7 @@ const TeamMember = () => {
         .catch(error => console.error('Error sending email:', error));
         console.log("Data sent to backend:", {
           teamMemberEmail,
-          userName,
+          name,
           message,
           timestamp,
         });
